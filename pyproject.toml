@@ -1,0 +1,18 @@
+[project]
+name = "qa-automation-framework"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "pytest",
+    "requests",
+    "pydantic",
+    "pydantic-settings",
+]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+testpaths = ["tests"]
+markers = [
+    "smoke: critical path, runs on every PR",
+    "regression: full suite",
+]
