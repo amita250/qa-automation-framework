@@ -7,7 +7,7 @@ def test_valid_credentials_return_token(client):
     assert isinstance(token, str)
 
 @pytest.mark.smoke
-def test_delete_requires_authentication(client):
+def test_delete_requires_authentication(client, token):
     payload = {
         "firstname": "QA",
         "lastname": "Test",
@@ -19,5 +19,8 @@ def test_delete_requires_authentication(client):
     assert created.status_code == 200
     booking_id = created.json()["bookingid"]
 
-    res = client.delete_booking(booking_id, token="invalid-token")
-    assert res.status_code == 403
+    try:
+        res = client.delete_booking(booking_id, token="invalid-token")
+        assert res.status_code == 403
+    finally:
+        client.delete_booking(booking_id, token=token)
